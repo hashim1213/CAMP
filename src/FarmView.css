@@ -1,0 +1,59 @@
+/* FarmView.css */
+
+
+.add-farm-btn {
+    background-color: #007bff; /* A nice shade of blue */
+    color: white; /* White text color */
+    border: none; /* Remove default border */
+     /* Add some padding */
+    font-size: 16px; /* Increase font size for better readability */
+    border-radius: 5px; /* Slightly rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    outline: none; /* Remove outline */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin-bottom: 0px; /* Add margin to separate from the grid below */
+  }
+  
+  .add-farm-btn:hover, .add-farm-btn:focus {
+    background-color: #0056b3; /* Darker blue on hover/focus for feedback */
+  }
+  .farms-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-farm-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns the button to the right */
+    padding: 20px; /* Adds some spacing around the button */
+  }
+  
+  .farms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+  }
+  
+
+  .view-options-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+  }
+  
+  .view-option, .filter-btn, .add-farm-btn {
+    margin-right: 10px; /* Spacing between buttons */
+  }
+  
+  /* Additional styles for .add-farm-btn if needed */
+  
+  
+  

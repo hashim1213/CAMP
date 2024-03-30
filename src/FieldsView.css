@@ -1,0 +1,33 @@
+
+
+.add-field-form {
+  margin-top: 40px;
+}
+.fields-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Adds padding around the grid */
+  }
+  
+  .fields-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust minmax for your preferred card size */
+    gap: 20px; /* Adjust the space between cards */
+  }
+  
+  .field-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out;
+    background-color: #fff;
+    overflow: hidden; /* Ensures the content does not overflow the rounded corners */
+  }
+  
+  .field-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Adds a shadow effect on hover */
+    cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+  }
+  

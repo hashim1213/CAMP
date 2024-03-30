@@ -1,0 +1,123 @@
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+    background-color: #ffffff; /* Background color set to white */
+    color: #333; /* Text color for better contrast */
+   /* box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
+    border-bottom: 4px solid #007bff; /* Adds a blue line underneath the header */
+}
+/* Add to your Dashboard.css */
+.user-profile-pic {
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    border-radius: 50%; /* Make it round */
+    margin-right: 10px;
+  }
+    
+/* Adjusting the container of the search bar */
+.search-bar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* Aligns the search bar to the right */
+    padding-top: 10px; /* Adds some space above the search bar */
+  }
+  
+  /* Styling for the search bar input */
+  .search-bar input {
+    width: 100%;
+    max-width: 300px; /* Adjusts the maximum width of the input */
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Ensure full width to spread out contents */
+  }
+  
+  .logo-and-nav {
+    display: flex;
+    align-items: center;
+  }
+  
+    .navigation {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Adjusts space between items */
+    }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Adjusts space between items */
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo img {
+    height: 50px; /* Adjust based on your logo size */
+    margin-right: 10px; /* Space between logo and text/name */
+  }
+  .navigation ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: right;
+  }
+  /* Update text color for navigation links for better visibility */
+  .navigation ul li {
+    padding: 0 15px;
+    cursor: pointer;
+    color: #333; /* Dark text color for visibility on white background */
+  }
+  
+  .dashboard-footer {
+    background-color: #f0f2f5; /* Light grey background */
+    color: #333; /* Dark text color */
+    text-align: center; /* Center the footer content */
+    padding: 20px 0; /* Add some padding */
+    /* A light border at the top of the footer */
+  }
+  
+  .footer-content {
+    font-size: 14px;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .dashboard-header {
+      flex-direction: column;
+      height: auto;
+      padding: 20px;
+    }
+  
+    .navigation ul {
+      justify-content: center;
+      width: 100%;
+      padding-top: 20px;
+    }
+  
+    .search-bar {
+      justify-content: center;
+      width: 100%;
+      padding-top: 20px;
+    }
+  
+    .search-bar input {
+      width: 90%; /* Adjust based on preference */
+    }
+  }
+  

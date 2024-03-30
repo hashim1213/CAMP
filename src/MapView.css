@@ -1,0 +1,13 @@
+/* MapView.css */
+.map-container {
+  width: 100%; /* Adjust the width as needed */
+  height: 100%; /* Adjust the height as needed */
+  position: relative; /* For more control over positioning */
+}
+
+.leaflet-container {
+  height: 500px; /* Adjust based on your layout needs */
+  width: 100%;
+  border-radius: 8px; /* Optional: adds rounded corners to the map */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Optional: adds a shadow for depth */
+}
