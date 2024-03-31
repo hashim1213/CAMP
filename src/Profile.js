@@ -1,46 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Input, Button, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useAuth } from './context/AuthContext';
 import { updateProfile, uploadProfilePic } from './firebase-helpers';
 import './Profile.css';
-import logoImg from './logo.png'; // Ensure you have this image in your project
-import gprofilePic from './profile.png'; // Default profile picture
+import Header from './Header';
 import { useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
-import { auth, db } from './firebase-config'; // Adjust import paths as needed
+import { db } from './firebase-config';
+// Import the necessary functions from Firebase
 import { doc, getDoc } from 'firebase/firestore';
 
 const Profile = () => {
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
-  const [userDetails, setUserDetails] = useState({});
-  const [form] = Form.useForm();
-  const [fileList, setFileList] = useState([]);
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      const docRef = doc(db, "users", currentUser.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserDetails(docSnap.data());
-      } else {
-        console.log("No user data available");
+    const { currentUser } = useAuth();
+    const navigate = useNavigate();
+    const [form] = Form.useForm();
+    const [fileList, setFileList] = useState([]);
+  
+    useEffect(() => {
+      const fetchUserDetails = async () => {
+        if (currentUser && currentUser.uid) {
+          // Use the new Firebase v9 modular syntax
+          const docRef = doc(db, "users", currentUser.uid); // Access the document reference
+          const docSnap = await getDoc(docRef); // Get the document snapshot
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            form.setFieldsValue({
+              name: userData.name,
+              phone: userData.phone,
+              address: userData.address,
+            });
+            // Handle setting existing profile picture if available
+            if (userData.profilePic) {
+              setFileList([{uid: '-1', name: 'profilePic.png', status: 'done', url: userData.profilePic}]);
+            }
+          } else {
+            console.log("No user data available");
+          }
+        }
+      };
+  
+      if (currentUser) {
+        fetchUserDetails();
       }
-    };
-
-    if (currentUser) {
-      fetchUserDetails();
-    }
-  }, [currentUser]);
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate('/login');
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+    }, [currentUser, form]);
 
   const handleUpdateProfile = async (values) => {
     let profilePicUrl = '';
@@ -61,65 +63,47 @@ const Profile = () => {
   const handleUploadChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
-  
-  const goToDashboard = () => {
-    navigate('/dashboard');
-  };
 
   return (
     <div className="profile-page">
-      <header className="dashboard-header">
-        <div className="header-content">
-          <div className="logo">
-            <img src={logoImg} alt="Logo" />
-          </div>
-          <div className="user-info" onClick={goToDashboard}>
-            <img src={userDetails?.profilePic || gprofilePic} alt="Profile" className="user-profile-pic" />
-            <span className="user-name">{userDetails?.name || 'Guest'}</span>
-            <button className="notifications-btn">Notifications</button>
-            <button className="logout-btn" onClick={handleLogout}>Logout</button>
-          </div>
-        </div>
-        <div className="search-bar">
-          <input type="text" placeholder="Search fields..." />
-        </div>
-      </header>
+      <Header /> {/* Use the Header here */}
 
-      <Button className="back-btn" onClick={goToDashboard}>Back to Dashboard</Button>
+      <div className="profile-content">
+        <Button className="back-btn" onClick={() => navigate('/dashboard')}>Back to Dashboard</Button>
 
-      <Form form={form} layout="vertical" onFinish={handleUpdateProfile} initialValues={{...userDetails}}>
-        <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please input your name!' }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="phone" label="Phone">
-          <Input />
-        </Form.Item>
-        <Form.Item name="address" label="Address">
-          <Input />
-        </Form.Item>
-        {/* Profile Picture Upload logic here */}
-        <Form.Item
-          name="upload"
-          label="Profile Picture"
-          valuePropName="fileList"
-          getValueFromEvent={handleUploadChange}
-        >
-          <Upload
-            name="file"
-            listType="picture"
-            beforeUpload={() => false}
-            onChange={handleUploadChange}
+        <Form form={form} layout="vertical" onFinish={handleUpdateProfile}>
+          <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please input your name!' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="phone" label="Phone">
+            <Input />
+          </Form.Item>
+          <Form.Item name="address" label="Address">
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="upload"
+            label="Profile Picture"
+            valuePropName="fileList"
+            getValueFromEvent={handleUploadChange}
           >
-            <Button icon={<UploadOutlined />}>Click to upload</Button>
-          </Upload>
-        </Form.Item>
-       
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Update Profile
-          </Button>
-        </Form.Item>
-      </Form>
+            <Upload
+              name="file"
+              listType="picture"
+              beforeUpload={() => false}
+              onChange={handleUploadChange}
+            >
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+            </Upload>
+          </Form.Item>
+         
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Update Profile
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   );
 };
