@@ -26,8 +26,10 @@ const Profile = () => {
             const userData = docSnap.data();
             form.setFieldsValue({
               name: userData.name,
+              role: userData.role,
               phone: userData.phone,
               address: userData.address,
+              
             });
             // Handle setting existing profile picture if available
             if (userData.profilePic) {
@@ -44,21 +46,24 @@ const Profile = () => {
       }
     }, [currentUser, form]);
 
-  const handleUpdateProfile = async (values) => {
-    let profilePicUrl = '';
-    if (fileList.length > 0) {
-      const file = fileList[0].originFileObj;
-      profilePicUrl = await uploadProfilePic(currentUser.uid, file);
-    }
-
-    try {
-      await updateProfile(currentUser.uid, values.name, profilePicUrl, values.phone, values.address);
-      console.log("Profile updated successfully.");
-      navigate('/dashboard');
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    }
-  };
+    const handleUpdateProfile = async (values) => {
+      let profilePicUrl = '';
+      if (fileList.length > 0 && fileList[0].originFileObj) {
+        const file = fileList[0].originFileObj; // Ensure this object exists and is correct
+        profilePicUrl = await uploadProfilePic(currentUser.uid, file);
+      } else {
+        console.error("No file selected for upload.");
+      }
+    
+      try {
+        await updateProfile(currentUser.uid, values.name, profilePicUrl,values.role, values.phone, values.address);
+        console.log("Profile updated successfully.");
+        navigate('/dashboard');
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    };
+    
 
   const handleUploadChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -73,6 +78,9 @@ const Profile = () => {
 
         <Form form={form} layout="vertical" onFinish={handleUpdateProfile}>
           <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please input your name!' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="role" label="Role">
             <Input />
           </Form.Item>
           <Form.Item name="phone" label="Phone">

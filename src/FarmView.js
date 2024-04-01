@@ -23,20 +23,34 @@ const FarmView = () => {
       const fetchFarms = async () => {
         const createdFarmsRef = query(collection(db, "farms"), where("createdBy", "==", currentUser.uid));
         const sharedFarmsRef = query(collection(db, "farms"), where("sharedWith", "array-contains", currentUser.uid));
-
+    
         const [createdFarmsSnap, sharedFarmsSnap] = await Promise.all([
             getDocs(createdFarmsRef),
             getDocs(sharedFarmsRef),
         ]);
-
+    
+        let farmsData = [];
         const createdFarms = createdFarmsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         const sharedFarms = sharedFarmsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-        // Merge and remove duplicates
         const allFarms = Array.from(new Set([...createdFarms, ...sharedFarms].map(JSON.stringify))).map(JSON.parse);
-        setFarms(allFarms);
+    
+        for (const farm of allFarms) {
+            const fieldsCollectionRef = collection(db, "farms", farm.id, "fields");
+            const fieldsSnap = await getDocs(fieldsCollectionRef);
+            const fields = fieldsSnap.docs.map(doc => doc.data());
+            const numberOfFields = fields.length;
+            const totalAcres = fields.reduce((acc, field) => acc + field.acres, 0);
+            
+            farmsData.push({
+                ...farm,
+                numberOfFields,
+                totalAcres,
+            });
+        }
+    
+        setFarms(farmsData);
     };
-
+    
     useEffect(() => {
         fetchFarms();
     }, [currentUser]);
@@ -123,12 +137,11 @@ const FarmView = () => {
 
           {currentView === 'map' && <MapView farms={farms} />}
           {currentView === 'allSites' && (
-            <div className="farms-grid">
-               {farms.map(farm => (
-  <FarmCard key={farm.id} farm={farm} teamMembers={teamMembers} />
-))}
-
-            </div>
+           <div className="farms-grid">
+           {farms.map(farm => (
+               <FarmCard key={farm.id} farm={farm} teamMembers={teamMembers} numberOfFields={farm.numberOfFields} totalAcres={farm.totalAcres} />
+           ))}
+       </div>
         )}
           <Modal
           title="Add New Farm"

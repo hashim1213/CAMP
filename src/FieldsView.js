@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from './firebase-config';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs, addDoc } from  'firebase/firestore';
 import { Form, Input, Button, Select, InputNumber, Card, Row, Col } from 'antd';
 import './FieldsView.css'; // Make sure your CSS file is imported
-import { Modal } from 'antd';
 import Header from './Header'; 
 import AddFieldModal from './AddFieldModal';
+import FieldCard from './FieldCard';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const FieldsView = () => {
+    const navigate = useNavigate();
     const { farmId } = useParams();
     const [fields, setFields] = useState([]);
     const [form] = Form.useForm();
+    const [farmName, setFarmName] = useState('');
     const [isAddFieldModalVisible, setIsAddFieldModalVisible] = useState(false);
 
     const fetchFields = async () => {
@@ -22,16 +26,18 @@ const FieldsView = () => {
       const data = await getDocs(fieldsCollectionRef);
       setFields(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
-    const showAddFieldModal = () => {
-        setIsAddFieldModalVisible(true);
-      };
-      
-      const handleAddFieldCancel = () => {
-        setIsAddFieldModalVisible(false);
-      };
-      
-  
+     // Function to fetch the farm's details
+     const fetchFarmDetails = async () => {
+      const farmRef = doc(db, "farms", farmId);
+      const farmSnap = await getDoc(farmRef);
+      if (farmSnap.exists()) {
+          setFarmName(farmSnap.data().name); // Assuming the farm document has a 'name' field
+      } else {
+          console.log("No such farm!");
+      }
+  };
     useEffect(() => {
+      fetchFarmDetails();
       fetchFields();
     }, [farmId]);
   
@@ -56,36 +62,34 @@ const FieldsView = () => {
         }
       };
       
-  return (
-    <div>
-        <Header />
-      <h2>Fields for Farm {farmId}</h2>
-      <Button type="primary" onClick={() => setIsAddFieldModalVisible(true)} style={{ marginBottom: 16 }}>
-        Add Field
-      </Button>
+      return (
+        <div>
+            <Header />
 
-   
-    <Row gutter={[16, 16]} className="fields-grid">
-  {fields.map((field) => (
-    <Col span={60} key={field.id}>
-      <Card title={field.name} bordered={false} className="field-card">
-        <p><strong>Address:</strong> {field.address}</p>
-        <p><strong>Acres:</strong> {field.acres}</p>
-        <p><strong>Soil Type:</strong> {field.soilType}</p>
-        <p><strong>Notes:</strong> {field.notes}</p>
-        <p><strong>Boundary:</strong> {field.boundary}</p>
-      </Card>
-    </Col>
-  ))}
-</Row>
-<AddFieldModal
-        isVisible={isAddFieldModalVisible}
-        onSubmit={addField}
-        onCancel={() => setIsAddFieldModalVisible(false)}
-      />
- 
-    </div>
-  );
+            
+            <div className="fields-header">
+                <ArrowLeftOutlined onClick={() => navigate('/dashboard')} style={{ marginRight: 16, cursor: 'pointer' }} />
+                <span style={{ flex: 1 }}><h2>{farmName}</h2></span>
+                <Button className="add-field-btn" onClick={() => setIsAddFieldModalVisible(true)}>
+                    Add Field
+                </Button>
+            </div>
+
+            <div className="fields-container"> {/* Container for padding and possibly other styles */}
+            <div className="fields-grid"> {/* Grid container */}
+               {fields.map((field) => (
+                <FieldCard key={field.id} field={field} />
+               ))}
+           </div>
+          </div>
+
+            <AddFieldModal
+                isVisible={isAddFieldModalVisible}
+                onSubmit={addField}
+                onCancel={() => setIsAddFieldModalVisible(false)}
+            />
+        </div>
+    );
 };
 
 export default FieldsView;

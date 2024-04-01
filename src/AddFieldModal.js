@@ -73,7 +73,7 @@ const AddFieldModal = ({ isVisible, onSubmit, onCancel }) => {
 
   <Form.Item>
           <Button type="primary" htmlType="submit">Submit</Button>
-          <Button type="default" onClick={onCancel} style={{ marginLeft: '10px' }}> // Use the onCancel prop
+          <Button type="default" onClick={onCancel} style={{ marginLeft: '10px' }}> 
             Cancel
           </Button>
         </Form.Item>

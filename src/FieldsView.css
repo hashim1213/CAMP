@@ -1,4 +1,20 @@
+.add-field-btn {
+  background-color: #007bff; /* A nice shade of blue */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+   /* Add some padding */
+  font-size: 16px; /* Increase font size for better readability */
+  border-radius: 5px; /* Slightly rounded corners */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  outline: none; /* Remove outline */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-bottom: 0px; /* Add margin to separate from the grid below */
+}
 
+.add-field-btn:hover, .add-farm-btn:focus {
+  background-color: #0056b3; /* Darker blue on hover/focus for feedback */
+}
 
 .add-field-form {
   margin-top: 40px;
@@ -30,4 +46,13 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Adds a shadow effect on hover */
     cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
   }
+  .fields-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 10px; /* Adjust the gap between items as needed */
+  }
   
+
+
+/* Other styles remain the same */

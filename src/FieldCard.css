@@ -1,0 +1,25 @@
+.field-card {
+    /* Apply general styling to the card */
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.field-card .ant-card-head-title {
+    /* Center the title */
+    text-align: center;
+}
+
+.field-card .ant-card-body {
+    /* Align the content to the left */
+    text-align: left;
+}
+
+.field-card p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.field-card .anticon {
+    margin-right: 8px;
+}

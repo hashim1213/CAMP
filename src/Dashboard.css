@@ -15,23 +15,23 @@
     width: 40px; /* Adjust size as needed */
     height: 40px; /* Adjust size as needed */
     border-radius: 50%; /* Make it round */
-    margin-right: 10px;
+   
   }
     
 /* Adjusting the container of the search bar */
 .search-bar {
     width: 100%;
     display: flex;
-    justify-content: flex-end; /* Aligns the search bar to the right */
-    padding-top: 10px; /* Adds some space above the search bar */
+    justify-content: center; /* Aligns the search bar to the right */
+     /* Adds some space above the search bar */
   }
   
   /* Styling for the search bar input */
   .search-bar input {
     width: 100%;
-    max-width: 300px; /* Adjusts the maximum width of the input */
+     /* Adjusts the maximum width of the input */
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 34px;
     border: 1px solid #ddd;
     outline: none;
   }
@@ -57,6 +57,7 @@
   .user-info {
     display: flex;
     align-items: center;
+    object-fit: cover; /* Ensures the image covers the area without distortion */
     justify-content: center;
     gap: 10px; /* Adjusts space between items */
   }
@@ -120,4 +121,50 @@
       width: 90%; /* Adjust based on preference */
     }
   }
-  
+  /* Existing styles remain unchanged */
+
+/* Styling for the notification bell icon */
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adds space between the notification icon and profile picture */
+}
+
+.notification-bell, .user-profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notification-bell {
+  background-color: #f0f2f5; /* Ensure background color is visible */
+  font-size: 20px; /* Adjust based on your preference */
+  padding: 8px; /* Adjust padding to ensure the icon is centered */
+}
+
+/* Ensure the Ant Design dropdown aligns items correctly */
+.ant-dropdown-link {
+  display: flex;
+  align-items: center;
+}
+/* Add these styles to your Dashboard.css */
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns the text to the left */
+}
+
+
+.user-name {
+  font-size: 12px; /* Adjust as needed */
+  font-weight: bold; /* Makes the name stand out */
+}
+
+.user-role {
+  font-size: 10px; /* Smaller than the name */
+  color: #666; /* Slightly muted color */
+}

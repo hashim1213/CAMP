@@ -11,6 +11,7 @@ import 'leaflet/dist/leaflet.css';
 import FarmView from './FarmView';
 import FieldsView from './FieldsView';
 import NotFound from './NotFound';
+import FieldDetail from './FieldDetail';
 function App() {
   return (
     <Router>
@@ -25,6 +26,7 @@ function App() {
           <Route path="/farms/:farmId" element={<FarmView />} />
           <Route path="/profile" element={<Profile />} />      
           <Route path="/farms/:farmId/fields" element={<FieldsView />} />
+          <Route path="/fields/:fieldId" element={<FieldDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
