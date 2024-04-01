@@ -1,11 +1,11 @@
 .farm-card {
-    border: 1px solid #ddd;
+    border: 1px solid #f0f2f5;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
     cursor: pointer;
     transition: box-shadow 0.3s ease-in-out;
-    background-color: #fff;
+    background-color:#f0f2f5;
   }
   
   .farm-card:hover {
@@ -35,7 +35,7 @@
   .farm-card .contact-info {
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #666;;
   }
   .shared-with-icons {
     margin-top: 10px;

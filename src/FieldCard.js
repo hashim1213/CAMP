@@ -15,7 +15,12 @@ const handleClick = () => {
   navigate(`/fields/${field.id}`); // Navigate to FieldDetail view
 };
   return (
-    <Card title={field.name} bordered={false} className="field-card" onClick={handleClick}>
+    <div className="field-card" onClick={handleClick}>
+    <div className = "field-title">
+    <h3> {field.name}</h3>
+    <h2>{field.acres} ac</h2>
+    </div>
+    <div className="field-info">
       <p>
         <EnvironmentOutlined /> Address: {field.address}
       </p>
@@ -35,7 +40,8 @@ const handleClick = () => {
           <FileTextOutlined /> Boundary: {field.boundary}
         </p>
       )}
-    </Card>
+   </div>
+    </div>
   );
 };
 

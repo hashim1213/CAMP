@@ -15,6 +15,10 @@ const Header = () => {
     const { currentUser } = useAuth();
     const [userDetails, setUserDetails] = useState(null);
 
+    const navigateToDashboard = () => {
+        navigate('/dashboard'); // Navigate to the dashboard route
+      };
+    
     useEffect(() => {
         const fetchUserDetails = async () => {
             if (currentUser) {
@@ -65,9 +69,9 @@ const Header = () => {
     return (
         <header className="dashboard-header">
             <div className="header-content">
-                <div className="logo">
-                    <img src={logoImg} alt="Logo" />
-                </div>
+                 <div className="logo" onClick={navigateToDashboard}>
+            <img src={logoImg} alt="Logo" style={{cursor: 'pointer'}} />
+            </div>
                 <div className="search-bar">
                     <input type="text" placeholder="Search fields..." />
                 </div>

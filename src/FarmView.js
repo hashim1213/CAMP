@@ -128,6 +128,8 @@ const FarmView = () => {
             <div className="view-options-container">
                 <Button className="view-option" onClick={() => setCurrentView('map')}>Map</Button>
                 <Button className="view-option" onClick={() => setCurrentView('allSites')}>All Sites</Button>
+                <Button className="view-option" onClick={() => setCurrentView('Tasks')}>Tasks</Button>
+                <Button className="view-option" onClick={() => setCurrentView('Calandar')}>Calandar</Button>
                 <Button className="filter-btn" onClick={applyFilter}>Filter</Button>
             </div>
             <div className="add-farm-container">

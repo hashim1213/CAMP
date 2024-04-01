@@ -1,23 +1,52 @@
 .field-card {
     /* Apply general styling to the card */
-    margin: 10px 0;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 
+    border: 1px solid #f0f2f5;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out;
+    background-color:#f0f2f5;
 }
 
 .field-card .ant-card-head-title {
     /* Center the title */
-    text-align: center;
+    text-align: left;
 }
 
 .field-card .ant-card-body {
     /* Align the content to the left */
     text-align: left;
 }
+.field-card h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 20px;
+    
+  }
+  .field-info{
+    margin-top: 1px;
+    padding-top: 10px;
+    border-top: 1px solid #666;
+  }
+  .field-card h2{
+    margin-top: 0;
+    color: #666;
+    font-size: 20px;}
 
+  .field-title {
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* This ensures they are aligned in the middle vertically */
+  }
+  
 .field-card p {
-    margin-bottom: 10px;
-    line-height: 1.5;
+    margin: 4px 0;
+    color: #666;
+    text-align: left;
+    line-height: 1.6;
+    
 }
 
 .field-card .anticon {

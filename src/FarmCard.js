@@ -25,8 +25,8 @@ const FarmCard = ({ farm, teamMembers = [], numberOfFields, totalAcres }) => {
   return (
     <div className="farm-card" onClick={handleClick}>
       <h3> {farm.name}</h3>
-      <p><EnvironmentOutlined /> {farm.address}</p>
       <div className="contact-info">
+      <p><EnvironmentOutlined /> {farm.address}</p>
         <p><UserOutlined /> Contact: {farm.contactName}</p>
         <p><PhoneOutlined /> Phone: {farm.phoneNumber}</p>
         <p><FieldNumberOutlined /> Fields: {numberOfFields} (Total acres: {totalAcres})</p>
