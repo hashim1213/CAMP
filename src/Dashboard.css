@@ -102,24 +102,16 @@
     .dashboard-header {
       flex-direction: column;
       height: auto;
-      padding: 20px;
+      
     }
   
     .navigation ul {
       justify-content: center;
       width: 100%;
-      padding-top: 20px;
+      
     }
   
-    .search-bar {
-      justify-content: center;
-      width: 100%;
-      padding-top: 20px;
-    }
-  
-    .search-bar input {
-      width: 90%; /* Adjust based on preference */
-    }
+   
   }
   /* Existing styles remain unchanged */
 

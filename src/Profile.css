@@ -1,30 +1,7 @@
-.profile-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .profile-header {
-    width: 100%;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ececec;
-  }
+
   
   .profile-logo {
     width: 120px;
-  }
-  
-  .profile-form {
-    max-width: 500px;
-    margin: auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    background-color: #fff;
   }
   
   .profile-picture-upload {
@@ -32,8 +9,46 @@
     margin-bottom: 20px;
   }
   
-  .profile-form-button {
-    width: 100%;
+  .profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+  .button-container {
+    display: flex;
+    justify-content: flex-start; /* Aligns children (the button) to the start of the container */
+    align-items: center; /* Aligns children vertically in the center, if needed */
+    padding: 20px;
+    width: 100%; /* Ensures the container spans the full width */
+  }
+  
+  
+  .profile-content {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    border-radius: 8px;
+    background: #fff;
+  }
+  
+  .name-fields, .address-fields {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .profile-pic-preview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Further style adjustments */
   
   

@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'; // Fix 1: Add useEffect here
-import { Form, Input, Button, Checkbox,Modal } from 'antd';
-import './login.css';
-import { useNavigate } from 'react-router-dom';
-import { auth } from './firebase-config'; // Fix 2: Ensure auth is imported correctly
-import { useAuth } from './context/AuthContext';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import logoImg from './logo.png';
-
+import React, { useEffect } from "react"; // Fix 1: Add useEffect here
+import { Form, Input, Button, Checkbox, Modal } from "antd";
+import "./login.css";
+import { useNavigate } from "react-router-dom";
+import { auth } from "./firebase-config"; // Fix 2: Ensure auth is imported correctly
+import { useAuth } from "./context/AuthContext";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import logoImg from "./logo.png";
 
 const Login = () => {
   const { currentUser } = useAuth();
@@ -14,7 +13,7 @@ const Login = () => {
 
   useEffect(() => {
     if (currentUser) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [currentUser, navigate]);
 
@@ -22,18 +21,18 @@ const Login = () => {
     try {
       // Attempt to sign in with email and password
       await signInWithEmailAndPassword(auth, values.username, values.password);
-      navigate('/dashboard'); // Navigate on successful login
+      navigate("/dashboard"); // Navigate on successful login
     } catch (error) {
-      console.error('Login Failed:', error.message);
+      console.error("Login Failed:", error.message);
       Modal.error({
-        title: 'Login Failed',
-        content: 'The username or password you entered is incorrect.',
-      });// Here you can set an error state and show it to the user
+        title: "Login Failed",
+        content: "The username or password you entered is incorrect.",
+      }); // Here you can set an error state and show it to the user
     }
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -45,18 +44,17 @@ const Login = () => {
         onFinishFailed={onFinishFailed}
         className="login-form"
       >
-
         <img src={logoImg} alt="Logo" className="login-logo" />
         <Form.Item
           name="username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[{ required: true, message: "Please input your username!" }]}
         >
           <Input placeholder="Username" />
         </Form.Item>
 
         <Form.Item
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password placeholder="Password" />
         </Form.Item>

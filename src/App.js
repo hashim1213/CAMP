@@ -12,17 +12,18 @@ import FarmView from './FarmView';
 import FieldsView from './FieldsView';
 import NotFound from './NotFound';
 import FieldDetail from './FieldDetail';
+import TeamSlideOut from './TeamSlideOut';
 function App() {
   return (
     <Router>
       <AuthProvider>
+      <TeamSlideOut />
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} /> {/* Home component not defined yet */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* Add more routes as needed */} 
           <Route path="/farms/:farmId" element={<FarmView />} />
           <Route path="/profile" element={<Profile />} />      
           <Route path="/farms/:farmId/fields" element={<FieldsView />} />
@@ -39,7 +40,7 @@ function App() {
 function Home() {
   return (
     <div>
-      <h1>Welcome to the Crop Scouting App</h1>
+      <h1>Welcome to CAMP</h1>
       <nav>
         <Link to="/login">Login</Link> | <Link to="/signup">Signup</Link>
       </nav>

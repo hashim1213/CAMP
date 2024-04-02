@@ -1,0 +1,138 @@
+/* CropView.css */
+.crop-view-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+.add-crop-btn {
+        background-color: #45a049; /* A nice shade of blue */
+        color: white; /* White text color */
+        border: none; /* Remove default border */
+        font-size: 16px; /* Increase font size for better readability */
+        border-radius: 5px; /* Slightly rounded corners */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        outline: none; /* Remove outline */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        margin-bottom: 0px; /* Add margin to separate from the grid below */
+      
+}
+.add-crop-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns the button to the right */
+   /* Adds some spacing around the container */
+}
+.add-crop-btn:hover {
+    background-color: #45a049;
+}
+
+.crops-container {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Card styling */
+.ant-card {
+    border-radius: 8px;
+    border: 1px solid #f0f2f5;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out;
+    background-color:#f0f2f5;
+    transition: 0.3s;
+}
+.ant-card h2{
+    margin-top: 0;
+    font-size: 24px;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-icon {
+    margin-top: -10px; /* Moves the icon higher */
+    font-size: 24px;
+    color: green;
+}
+
+
+.field-title {
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* This ensures they are aligned in the middle vertically */
+  }
+  
+.ant-card p{
+
+    margin: 0px 0;
+    color: #666;
+    text-align: left;
+    line-height: 1.6;
+}
+.ant-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    
+}
+
+/* Modal styling */
+.ant-modal-header {
+    background-color: #f0f2f5;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.ant-modal-title {
+    color: #1890ff;
+}
+
+/* Button within modal */
+.ant-btn-primary {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.ant-btn-primary:hover, .ant-btn-primary:focus {
+    background-color: #45a049;
+    border-color: #45a049;
+}
+
+/* Override Ant Design styles for consistent appearance */
+.ant-input, .ant-picker {
+    border-radius: 4px;
+}
+
+.ant-form-item-label > label {
+    color: #595959; /* Making labels darker for better readability */
+}
+.field-detail-container {
+    margin: 0 auto; /* Center the container */
+    padding: 0 20px; /* Add padding to the sides */
+    max-width: 100%; /* Maximum width of the content */
+}
+
+/* Add some styles to the header to ensure it has some spacing */
+
+
+/* Style for the back button for consistency */
+.back-button {
+    margin-bottom: 20px; /* Adds space below the button */
+}
+
+/* Ensures the tabs have some spacing from the edges */
+.ant-tabs {
+    margin-top: 0px;
+    margin-left: 20px;
+    margin-right:20px;
+}
+.fields-header {
+    margin-top:0px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the gap between items as needed */
+  }
+  

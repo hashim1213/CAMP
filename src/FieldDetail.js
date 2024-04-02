@@ -1,30 +1,69 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { Tabs } from 'antd';
-import Header from './Header'; // Import the Header component
-import CropView from './CropView';
-import InspectionsView from './InspectionsView'; 
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { db } from "./firebase-config";
+import { doc, getDoc } from "firebase/firestore";
+import { Tabs, Button } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import Header from "./Header";
+import CropView from "./CropView";
+import InspectionsView from "./InspectionsView";
+import "./FieldDetail.css";
+
 const { TabPane } = Tabs;
-// Adjust the path as needed
 
 const FieldDetail = () => {
-  const { fieldId } = useParams(); // To fetch data for the specific field
+  const navigate = useNavigate();
+  const { farmId, fieldId } = useParams(); // Ensure farmId is also retrieved from useParams
+  const [fieldDetails, setFieldDetails] = useState({ name: "Loading..." }); // Initialized with a loading state
+
+  useEffect(() => {
+    const fetchFieldDetails = async () => {
+      console.log(`Fetching details for farmId: ${farmId}, fieldId: ${fieldId}`);
+      if (!farmId || !fieldId) {
+        console.log("farmId or fieldId is missing.");
+        return;
+      }
+      const fieldRef = doc(db, "farms", farmId, "fields", fieldId);
+      try {
+        const docSnap = await getDoc(fieldRef);
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+          setFieldDetails(docSnap.data());
+        } else {
+          console.log("No such field!");
+          setFieldDetails({ name: "Field not found" }); // Provide feedback when field is not found
+        }
+      } catch (error) {
+        console.error("Error fetching field details:", error);
+        setFieldDetails({ name: "Error fetching details" }); // Provide feedback on error
+      }
+    };
+  
+    fetchFieldDetails();
+  }, [farmId, fieldId]);
+  
 
   return (
-    
     <div>
-        <Header/>
-      <h2>Field Details (ID: {fieldId})</h2>
+      <Header />
+      <div className="fields-header">
+        <ArrowLeftOutlined
+          onClick={() => navigate(-1)}
+          style={{ marginRight: 16, cursor: "pointer" }}
+        />
+        <span style={{ flex: 1 }}>
+          <h2>{fieldDetails.name}</h2>
+        </span>
+      </div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Crops" key="1">
-          <CropView />
+          <CropView fieldId={fieldId} />
         </TabPane>
         <TabPane tab="Inspections" key="2">
-          <InspectionsView />
+          <InspectionsView fieldId={fieldId} />
         </TabPane>
-
         <TabPane tab="Programmes" key="3">
-          {/* Content for Programmes */}
+          {/* Placeholder for Programmes content */}
         </TabPane>
       </Tabs>
     </div>

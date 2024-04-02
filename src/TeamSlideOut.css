@@ -1,0 +1,18 @@
+
+/* In your CSS file */
+.slide-out-toggle {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    color: blue; 
+    height:100px;
+    transform: translateY(-50%);
+    z-index: 1000; /* Ensure it's above other content */
+    border-radius: 4px 0 0 4px; /* Rounded corners on the left side */
+  }
+  
+  /* Adjust the right position when the drawer is open */
+  .slide-out-toggle.open {
+    right: 500px; /* Adjust this value based on the width of your Drawer */
+  }
+  
