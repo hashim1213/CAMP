@@ -1,41 +1,50 @@
 .farm-card {
-    border: 1px solid #f0f2f5;
+    border: 1px solid #ddd;;
     border-radius: 8px;
     padding: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     cursor: pointer;
     transition: box-shadow 0.3s ease-in-out;
-    background-color:#f0f2f5;
+    background-color:#ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    
   }
   
   .farm-card:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.12);
   }
-  
+  .farm-card .header {
+    display: flex;
+    justify-content: space-between; /* Aligns items to each side of the container */
+    align-items: center; /* Centers items vertically */
+    width: 100%; /* Ensures the container fills its parent width */
+  }
   .farm-card h3 {
+    text-align: left;
     margin-top: 0;
-    color: #333;
-    font-size: 20px;
+    color: #1d354a;
+    font-size: 15px;
   }
   
   .farm-card p {
     margin: 4px 0;
-    color: #666;
+    color: #506b84;
     text-align: left;
     line-height: 1.6;
+    font-size: 12px;
   }
   
   /* Example of using an icon from a library like Font Awesome in your component */
   .farm-card .icon {
     margin-right: 8px;
-    color: #007bff;
+    color: #546f87;
   }
   
   /* Additional styling to visually separate the information */
   .farm-card .contact-info {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #666;;
+    margin-top: 5px;
+    padding-top: 5px;
+   
   }
   .shared-with-icons {
     margin-top: 10px;

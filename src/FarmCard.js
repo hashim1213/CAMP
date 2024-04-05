@@ -24,18 +24,21 @@ const FarmCard = ({ farm, teamMembers = [], numberOfFields, totalAcres }) => {
   
   return (
     <div className="farm-card" onClick={handleClick}>
-      <h3> {farm.name}</h3>
+    <div className="header">
+        <h3>{farm.name}</h3>
+        {farm.sharedWith && farm.sharedWith.length > 0 && (
+          <Tooltip title={sharedWithContent} placement="top">
+            <ShareAltOutlined style={{ fontSize: '20px', marginLeft: 'auto' }} />
+          </Tooltip>
+        )}
+      </div>
       <div className="contact-info">
       <p><EnvironmentOutlined /> {farm.address}</p>
         <p><UserOutlined /> Contact: {farm.contactName}</p>
         <p><PhoneOutlined /> Phone: {farm.phoneNumber}</p>
         <p><FieldNumberOutlined /> Fields: {numberOfFields} (Total acres: {totalAcres})</p>
       </div>
-      {farm.sharedWith && farm.sharedWith.length > 0 && (
-        <Tooltip title={sharedWithContent} placement="top">
-          <ShareAltOutlined style={{ fontSize: '20px' }} />
-        </Tooltip>
-      )}
+     
 
     </div>
   );

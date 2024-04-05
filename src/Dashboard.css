@@ -7,8 +7,8 @@
     width: 100%;
     background-color: #ffffff; /* Background color set to white */
     color: #333; /* Text color for better contrast */
-   /* box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
-    border-bottom: 4px solid #007bff; /* Adds a blue line underneath the header */
+   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+   /*border-bottom: 4px solid #007bff;*//* Adds a blue line underneath the header */
 }
 /* Add to your Dashboard.css */
 .user-profile-pic {
@@ -113,7 +113,6 @@
   
    
   }
-  /* Existing styles remain unchanged */
 
 /* Styling for the notification bell icon */
 .user-actions {
