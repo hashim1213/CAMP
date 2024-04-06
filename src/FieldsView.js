@@ -20,6 +20,7 @@ const FieldsView = () => {
   const [form] = Form.useForm();
   const [farmName, setFarmName] = useState("");
   const [isAddFieldModalVisible, setIsAddFieldModalVisible] = useState(false);
+  
 
   const fetchFields = async () => {
     const fieldsCollectionRef = collection(db, "farms", farmId, "fields");

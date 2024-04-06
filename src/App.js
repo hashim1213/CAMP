@@ -40,6 +40,7 @@ function App() {
               <Route path="/" element={<Home />} /> {/* Home component placeholder */}
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+             
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/farms/:farmId" element={<FarmView />} />
               <Route path="/profile" element={<Profile />} />

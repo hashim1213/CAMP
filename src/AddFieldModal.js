@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Select, InputNumber, Modal } from "antd";
+import MapFieldComponent from "./MapFieldComponent"; // Make sure to create this component
+import "leaflet/dist/leaflet.css";
 const { TextArea } = Input;
 const { Option } = Select;
 
+
 const AddFieldModal = ({ isVisible, onSubmit, onCancel }) => {
   const [form] = Form.useForm();
+  const [isMapVisible, setIsMapVisible] = useState(false);
 
   const handleSubmit = async (values) => {
     await onSubmit(values); // Call the onSubmit prop passed from parent
     form.resetFields(); // Reset form fields after submission
+  };
+  const handleMapSubmit = (boundaryData) => {
+    // Process the boundary data, e.g., convert it to a GeoJSON or a list of coordinates
+    // Then set it in the form's boundary field
+    form.setFieldsValue({ boundary: JSON.stringify(boundaryData) });
+    setIsMapVisible(false); // Hide the map modal
   };
   return (
     <Modal
@@ -63,12 +73,17 @@ const AddFieldModal = ({ isVisible, onSubmit, onCancel }) => {
           <TextArea rows={4} placeholder="Enter any additional notes" />
         </Form.Item>
 
+        <Form.Item>
+          <Button onClick={() => setIsMapVisible(true)}>
+            Open Map to Define Boundary
+          </Button>
+        </Form.Item>
         <Form.Item
           name="boundary"
           label="Field Boundary"
-          help="Provide a link to the map or a description"
+          help="Boundary data will be filled automatically after using the map."
         >
-          <Input placeholder="Link to map or description" />
+          <Input placeholder="Boundary data" disabled />
         </Form.Item>
 
         <Form.Item>
@@ -84,6 +99,16 @@ const AddFieldModal = ({ isVisible, onSubmit, onCancel }) => {
           </Button>
         </Form.Item>
       </Form>
+      <Modal
+        title="Define Field Boundary"
+        visible={isMapVisible}
+        onCancel={() => setIsMapVisible(false)}
+        width="90%"
+        style={{ top: 20 }}
+        footer={null}
+      >
+        <MapFieldComponent onSubmit={handleMapSubmit} />
+      </Modal>
     </Modal>
   );
 };

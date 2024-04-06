@@ -60,9 +60,10 @@
   .messages {
     flex-grow: 1;
     overflow-y: auto;
+  
    
   }
-  
+  ::-webkit-scrollbar {display:none;}
   .message {
     display: flex;
     margin-bottom: 10px;
