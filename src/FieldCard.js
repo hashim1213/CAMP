@@ -22,7 +22,7 @@ const handleClick = () => {
     </div>
     <div className="field-info">
       <p>
-        <EnvironmentOutlined /> Address: {field.address}
+        <EnvironmentOutlined /> {field.address}
       </p>
       <p>
         <AreaChartOutlined /> Acres: {field.acres}

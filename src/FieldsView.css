@@ -23,8 +23,8 @@
     flex-direction: column;
     padding: 20px; /* Adds padding around the grid */
   }
-  .h2{
-    color: #333;
+  h2{
+   color: #1d354a;
   }
   .fields-grid {
     display: grid;

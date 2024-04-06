@@ -38,17 +38,17 @@
 /* Card styling */
 .ant-card {
     border-radius: 8px;
-    border: 1px solid #f0f2f5;
+    border: 1px solid #ddd;
     border-radius: 8px;
     cursor: pointer;
     transition: box-shadow 0.3s ease-in-out;
-    background-color:#f0f2f5;
+    background-color:#ffff;
     transition: 0.3s;
 }
 .ant-card h2{
     margin-top: 0;
-    font-size: 24px;
-    color: #666;
+    font-size: 20px;
+    color: #1d354a;
     display: flex;
     justify-content: space-between;
     align-items: center;
