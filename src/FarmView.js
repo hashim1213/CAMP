@@ -6,109 +6,47 @@ import FarmCard from "./FarmCard";
 import "./FarmView.css";
 import { Modal, Button, Form, Input, Checkbox, Select } from "antd";
 import MapView from "./MapView";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchFarms } from './farmsSlice';
 const { Option } = Select;
 
 const FarmView = () => {
-  const { currentUser } = useAuth();
+ // const { currentUser } = useAuth();
   const [currentView, setCurrentView] = useState("allSites");
-  const [farms, setFarms] = useState([]);
+  //const [farms, setFarms] = useState([]);
   const [filteredFarms, setFilteredFarms] = useState([]); // Declare filteredFarms and its setter
   const [isAddFarmModalVisible, setIsAddFarmModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [isShareEnabled, setIsShareEnabled] = useState(false);
   const [selectedTeamMembers, setSelectedTeamMembers] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
-  // Fetch farms either created by the user or shared with the user
-  const fetchFarms = async () => {
-    const createdFarmsRef = query(
-      collection(db, "farms"),
-      where("createdBy", "==", currentUser.uid)
-    );
-    const sharedFarmsRef = query(
-      collection(db, "farms"),
-      where("sharedWith", "array-contains", currentUser.uid)
-    );
+  const dispatch = useDispatch();
+  const { currentUser } = useAuth();
 
-    const [createdFarmsSnap, sharedFarmsSnap] = await Promise.all([
-      getDocs(createdFarmsRef),
-      getDocs(sharedFarmsRef),
-    ]);
+  const farms = useSelector((state) => state.farms.items);
+  const farmStatus = useSelector((state) => state.farms.status);
+  const error = useSelector((state) => state.farms.error);
 
-    let farmsData = [];
-    const createdFarms = createdFarmsSnap.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    const sharedFarms = sharedFarmsSnap.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    const allFarms = Array.from(
-      new Set([...createdFarms, ...sharedFarms].map(JSON.stringify))
-    ).map(JSON.parse);
-
-    for (const farm of allFarms) {
-      const fieldsCollectionRef = collection(db, "farms", farm.id, "fields");
-      const fieldsSnap = await getDocs(fieldsCollectionRef);
-      const fields = fieldsSnap.docs.map((doc) => doc.data());
-      const numberOfFields = fields.length;
-      const totalAcres = fields.reduce((acc, field) => acc + field.acres, 0);
-
-      farmsData.push({
-        ...farm,
-        numberOfFields,
-        totalAcres,
-      });
+  useEffect(() => {
+    if (farmStatus === 'idle') {
+      dispatch(fetchFarms(currentUser.uid));
     }
+  }, [currentUser, farmStatus, dispatch]);
 
-    setFarms(farmsData);
-  };
-
-  useEffect(() => {
-    fetchFarms();
-  }, [currentUser]);
-
-  // Fetch all users for team member selection
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const users = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        name: doc.data().name,
-      }));
-      setTeamMembers(users);
-    };
-
-    fetchUsers();
-  }, []);
-
-  const handleShareChange = (e) => {
-    setIsShareEnabled(e.target.checked);
-  };
-
-  const handleTeamMemberSelect = (value) => {
-    setSelectedTeamMembers(value);
-  };
-
-  const showAddFarmModal = () => {
-    setIsAddFarmModalVisible(true);
-  };
-  // Fetch all users for the sharing functionality
+  const handleShareChange = (e) => setIsShareEnabled(e.target.checked);
+  const handleTeamMemberSelect = (value) => setSelectedTeamMembers(value);
+  const showAddFarmModal = () => setIsAddFarmModalVisible(true);
+  const handleCancel = () => setIsAddFarmModalVisible(false);
 
   const handleAddFarm = async (values) => {
-    // Define the farm data with fields filled from the form
     const farmData = {
       ...values,
-      createdBy: currentUser.uid, // Assuming currentUser contains the uid of the logged-in user
-      // If sharing is enabled and team members are selected, use selectedTeamMembers,
-      // otherwise, default to an array containing only the current user's uid
+      createdBy: currentUser.uid, 
       sharedWith:
         isShareEnabled && selectedTeamMembers.length > 0
           ? selectedTeamMembers
           : [currentUser.uid],
     };
-
     try {
       // Attempt to add the new farm data to the "farms" collection
       await addDoc(collection(db, "farms"), farmData);
@@ -125,14 +63,6 @@ const FarmView = () => {
       console.error("Error adding farm: ", error);
     }
   };
-
-  const handleCancel = () => setIsAddFarmModalVisible(false);
-  const applyFilter = () => {
-    // Example filter: show only farms with 'Farm' in the name
-    const filtered = farms.filter((farm) => farm.name.includes("Farm"));
-    setFilteredFarms(filtered);
-  };
-
   return (
     <div className="farms-container">
       <div className="view-options-container">
@@ -154,9 +84,7 @@ const FarmView = () => {
         >
           Calandar
         </Button>
-        <Button className="filter-btn" onClick={applyFilter}>
-          Filter
-        </Button>
+       
       </div>
       <div className="add-farm-container">
         <Button className="add-farm-btn" onClick={showAddFarmModal}>

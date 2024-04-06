@@ -54,14 +54,13 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-   
     padding: 10px;
   }
   
   .messages {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 10px;
+   
   }
   
   .message {
@@ -74,8 +73,7 @@
     flex-direction: row-reverse;
   }
   
-  .received {
-  }
+ 
   
   .message-avatar {
     flex-shrink: 0;
@@ -86,7 +84,7 @@
   
   .message-content {
     max-width: 80%;
-    margin: 0 10px;
+    margin: 0 0px;
     padding: 8px;
     border-radius: 16px;
     color: white;
@@ -100,21 +98,34 @@
    
   
   }
-  
   .received .message-content {
     background-color: #e4e6eb;
     color: black;
     border-bottom-left-radius: 0;
   }
   
-  .message-title {
+  
+  .message-date-center{
+    text-align: center;
     font-size: 12px;
-    margin-bottom: 3px;
+    margin-bottom : 10px;
+    padding: 5px;
+    color: #666;
   }
-  
-  .message-text {
+  /*
+ .message-text {
+   
+  } */
+  .sent .message-timestamp{
+    font-size: 10px;
+    color: #ddd;
+    text-align: right;
   }
-  
+  .received .message-timestamp{
+    font-size: 10px;
+    color: #666;
+    text-align: left;
+  }
   .chat-input-group {
     display: flex;
     margin-top: 10px;
@@ -122,10 +133,11 @@
   
   .chat-input {
     flex-grow: 1;
-    margin-right: 10px;
+    
   }
-  
+  /*
   .send-button {
-  }
+ 
+  }*/
   
   

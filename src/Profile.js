@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { db } from "./firebase-config";
 import { doc, getDoc } from "firebase/firestore";
 
-
-
 const Profile = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -18,9 +16,6 @@ const Profile = () => {
   const [fileList, setFileList] = useState([]);
   const { Option } = Select;
 
-
- 
-  
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (currentUser?.uid) {

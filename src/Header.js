@@ -9,33 +9,27 @@ import './Dashboard.css';
 import { auth, db } from './firebase-config';
 import { Menu, Dropdown } from 'antd';
 import { BellOutlined, PoweroffOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserDetails } from './userSlice';
 
 const Header = () => {
     const navigate = useNavigate();
     const { currentUser } = useAuth();
-    const [userDetails, setUserDetails] = useState(null);
+    const dispatch = useDispatch();
+    const userDetails = useSelector((state) => state.user.userDetails);
+
+    useEffect(() => {
+        if (currentUser) {
+            dispatch(fetchUserDetails(currentUser.uid));
+        }
+    }, [currentUser, dispatch]);
+
 
     const navigateToDashboard = () => {
         navigate('/dashboard'); // Navigate to the dashboard route
       };
     
-    useEffect(() => {
-        const fetchUserDetails = async () => {
-            if (currentUser) {
-                const docRef = doc(db, "users", currentUser.uid);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    setUserDetails(docSnap.data());
-                } else {
-                    console.log("No such document!");
-                }
-            }
-        };
-
-        fetchUserDetails();
-    }, [currentUser]);
-
+ 
     const handleLogout = async () => {
         try {
             await signOut(auth);

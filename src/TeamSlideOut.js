@@ -1,36 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, List, Avatar, Button } from 'antd';
-import { MessageOutlined } from '@ant-design/icons';
-import { db } from './firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
+import { MessageOutlined, ArrowLeftOutlined } from '@ant-design/icons'; // Import ArrowLeftOutlined for the back button
 import './TeamSlideOut.css';
 import ChatComponent from './ChatComponent';
 import { useAuth } from './context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTeamMembers } from './teamSlice'; // Adjust the import path as necessary
 
 const TeamSlideOut = () => {
   const { currentUser } = useAuth();
+  const dispatch = useDispatch();
+  
   const [visible, setVisible] = useState(false);
-  const [teamMembers, setTeamMembers] = useState([]);
   const [currentChatMemberId, setCurrentChatMemberId] = useState(null);
-  // State to hold the details of the current chat member
+  const teamMembers = useSelector(state => state.team.members);
   const [currentChatMember, setCurrentChatMember] = useState(null);
 
   useEffect(() => {
-    const fetchTeamMembers = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'users'));
-        const members = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setTeamMembers(members);
-      } catch (error) {
-        console.error("Failed to fetch team members:", error);
-      }
-    };
-
-    fetchTeamMembers();
-  }, []);
+    dispatch(fetchTeamMembers());
+  }, [dispatch]);
 
   useEffect(() => {
     const member = teamMembers.find(member => member.id === currentChatMemberId);
@@ -45,10 +33,12 @@ const TeamSlideOut = () => {
     setVisible(false);
     setCurrentChatMemberId(null);
   };
+
   const openChatWith = (memberId) => {
     setCurrentChatMemberId(memberId);
-    setVisible(true); // Ensure drawer remains open for chat
-};
+    setVisible(true);
+  };
+
   return (
     <>
       <Button
@@ -60,17 +50,23 @@ const TeamSlideOut = () => {
       <Drawer
         title={
           currentChatMember ? (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <>
+              <Button 
+                type="link" 
+                onClick={handleBackToTeamMembers} 
+                icon={<ArrowLeftOutlined />} 
+                style={{ marginRight: '10px', padding: '0', border: 'none', boxShadow: 'none' }}
+              />
               <Avatar src={currentChatMember.profilePic || "https://via.placeholder.com/150"} style={{ marginRight: '10px' }} />
               <span>{currentChatMember.name}</span>
-            </div>
+            </>
           ) : "Team Members"
         }
         placement="right"
         closable={true}
         onClose={handleCloseDrawer}
         visible={visible}
-        width={500}
+        width={400}
       >
         {currentChatMember ? (
           <ChatComponent

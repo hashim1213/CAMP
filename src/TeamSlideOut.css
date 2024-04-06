@@ -13,6 +13,6 @@
   
   /* Adjust the right position when the drawer is open */
   .slide-out-toggle.open {
-    right: 500px; /* Adjust this value based on the width of your Drawer */
+    right: 400px; /* Adjust this value based on the width of your Drawer */
   }
   
