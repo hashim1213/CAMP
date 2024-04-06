@@ -32,11 +32,11 @@ const FarmView = () => {
       dispatch(fetchFarms(currentUser.uid));
     }
   }, [currentUser, farmStatus, dispatch]);
-
   const handleShareChange = (e) => setIsShareEnabled(e.target.checked);
   const handleTeamMemberSelect = (value) => setSelectedTeamMembers(value);
   const showAddFarmModal = () => setIsAddFarmModalVisible(true);
   const handleCancel = () => setIsAddFarmModalVisible(false);
+
 
   const handleAddFarm = async (values) => {
     const farmData = {
@@ -47,6 +47,7 @@ const FarmView = () => {
           ? selectedTeamMembers
           : [currentUser.uid],
     };
+
     try {
       // Attempt to add the new farm data to the "farms" collection
       await addDoc(collection(db, "farms"), farmData);
@@ -63,6 +64,8 @@ const FarmView = () => {
       console.error("Error adding farm: ", error);
     }
   };
+
+
   return (
     <div className="farms-container">
       <div className="view-options-container">

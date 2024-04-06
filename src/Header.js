@@ -11,12 +11,18 @@ import { Menu, Dropdown } from 'antd';
 import { BellOutlined, PoweroffOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserDetails } from './userSlice';
+import { Button } from "antd";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaRegBell } from "react-icons/fa";
+import { FiMap } from "react-icons/fi";
+import { FaTasks } from "react-icons/fa";
 
 const Header = () => {
     const navigate = useNavigate();
     const { currentUser } = useAuth();
     const dispatch = useDispatch();
     const userDetails = useSelector((state) => state.user.userDetails);
+   
 
     useEffect(() => {
         if (currentUser) {
@@ -70,8 +76,17 @@ const Header = () => {
                     <input type="text" placeholder="Search fields..." />
                 </div>
                 <div className="user-actions">
+                <Dropdown overlay={notificationMenu} trigger={['click']}>
+                        <FaTasks className="icon-action notification-bell" />
+                    </Dropdown>
+                <Dropdown overlay={notificationMenu} trigger={['click']}>
+                        <FiMap className="icon-action notification-bell" />
+                    </Dropdown>
                     <Dropdown overlay={notificationMenu} trigger={['click']}>
-                        <BellOutlined className="icon-action notification-bell" />
+                    <FaRegCalendarAlt className="icon-action notification-bell" />
+                    </Dropdown>
+                    <Dropdown overlay={notificationMenu} trigger={['click']}>
+                        <FaRegBell className="icon-action notification-bell" />
                     </Dropdown>
                     <div className="user-info">
                         <Dropdown overlay={profileMenu} trigger={['click']} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
@@ -83,6 +98,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
+       
             </div>
         </header>
     );

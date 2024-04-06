@@ -118,13 +118,13 @@
 .user-actions {
   display: flex;
   align-items: center;
-  gap: 10px; /* Adds space between the notification icon and profile picture */
+  gap: 0px; /* Adds space between the notification icon and profile picture */
 }
 
 .notification-bell, .user-profile-pic {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 30%;
   margin-left: 5px;
   display: flex;
   justify-content: center;
