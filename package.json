@@ -1,6 +1,7 @@
 {
   "name": "c-scout",
   "version": "0.1.0",
+  "homepage": "https://hashim1213.github.io/CAMP/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -30,6 +31,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+   "deploy": "gh-pages -d build",
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
@@ -52,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
   }
 }
