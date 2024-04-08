@@ -17,15 +17,53 @@ import { Provider } from 'react-redux'; // Import from react-redux
 import { store } from './store'; // Ensure the store path is correct
 
 // Function Component for Home (Placeholder)
+import styled from 'styled-components';
+
+const HomeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  font-family: 'Arial', sans-serif;
+`;
+
+const Title = styled.h1`
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  
+`;
+
+const Navigation = styled.nav`
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledLink = styled(Link)`
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 1rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 function Home() {
   return (
-    <div>
-      <h1>Welcome to CAMP</h1>
-      <nav>
-        <Link to="/login">Login</Link> | <Link to="/signup">Signup</Link>
-      </nav>
+    <HomeContainer>
+      <Title>Welcome to CAMP</Title>
+      <Navigation>
+        <StyledLink to="/login">Login</StyledLink> | <StyledLink to="/signup">Signup</StyledLink>
+      </Navigation>
       {/* Any additional home page content */}
-    </div>
+    </HomeContainer>
   );
 }
 

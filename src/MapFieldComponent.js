@@ -1,62 +1,70 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, FeatureGroup, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, FeatureGroup } from 'react-leaflet';
 import { EditControl } from 'react-leaflet-draw';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
+import L from 'leaflet';
 
-
-const MapFieldComponent = ({ onFieldsChange }) => {
-  const [position, setPosition] = useState(null);
-
-  const LocateControl = () => {
-    const map = useMap();
+// Assuming the parent component passes the function as onBoundaryChange
+const MapFieldComponent = ({ onSubmit}) => {
+  const [mapCenter, setMapCenter] = useState(null);
   
-    useEffect(() => {
-      if (!position) { // Only locate if position has not been set
-        map.locate({ setView: true, maxZoom: 16 });
-      }
-    }, [map, position]); // Depend on position to avoid repeated locating
-  
-    useMapEvents({
-      locationfound(e) {
-        setPosition(e.latlng);
+  useEffect(() => {
+    // Attempt to fetch the user's current location
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setMapCenter([position.coords.latitude, position.coords.longitude]);
       },
-    });
+      () => {
+        console.log("Unable to retrieve your location. Using a default location.");
+        // Use a default location (e.g., center of Manitoba) if unable to fetch location
+        setMapCenter([55.0, -97.0]);
+      }
+    );
+  }, []);
 
-    return position ? (
+  const handleCreateOrEdit = (e) => {
+    // Checking if layer exists in the event
+    if (!e.layer) {
+      console.error("Layer data is missing from the event.");
+      return;
+    }
+  
+    try {
+      const boundaryData = e.layer.toGeoJSON().geometry; // Extracting the boundary data
+      onSubmit(boundaryData); // Submitting the boundary data
+    } catch (error) {
+      console.error("Error processing boundary data:", error);
+    }
+  };
+  
+  
+
+  return mapCenter ? (
+    <MapContainer center={mapCenter} zoom={9} style={{ height: '100vh', width: '100%' }}>
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <FeatureGroup>
         <EditControl
           position="topright"
-          onEdited={(e) => {
-            const layers = e.layers;
-            let coordinates = [];
-            layers.eachLayer((layer) => {
-              coordinates.push(layer.toGeoJSON().geometry.coordinates);
-            });
-            onFieldsChange(coordinates);
-          }}
-          onCreated={(e) => {
-            const { layer } = e;
-            const coordinates = layer.toGeoJSON().geometry.coordinates;
-            onFieldsChange(coordinates);
-          }}
           draw={{
             rectangle: false,
             polyline: false,
-            circle: false,
             circlemarker: false,
             marker: false,
+            // Enable polygons for drawing complex shapes
+            polygon: true,
           }}
+          edit={{
+            featureGroup: L.featureGroup(), // Necessary for editing capabilities
+            remove: true,
+          }}
+          onCreated={handleCreateOrEdit}
+          onEdited={handleCreateOrEdit}
         />
       </FeatureGroup>
-    ) : null;
-  };
-
-  return (
-    <MapContainer center={position || [51.505, -0.09]} zoom={13} style={{ height: '100vh', width: '100%' }}>
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <LocateControl />
     </MapContainer>
+  ) : (
+    <p>Loading map... If it takes too long, ensure you've allowed location access.</p> // Provide a more informative loading/error message
   );
 };
 

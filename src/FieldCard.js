@@ -1,46 +1,54 @@
 import React from 'react';
 import { Card } from 'antd';
-import {
-  EnvironmentOutlined,
-  FileTextOutlined,
-  AreaChartOutlined,
-} from '@ant-design/icons';
-import './FieldCard.css'; // Ensure you create and import your CSS for styling
+import { EnvironmentOutlined, FileTextOutlined, AreaChartOutlined } from '@ant-design/icons';
+import './FieldCard.css'; // Ensure your CSS for styling is correctly set up
 import { useNavigate } from 'react-router-dom';
 
 const FieldCard = ({ field }) => {
   const navigate = useNavigate();
 
-const handleClick = () => {
-  navigate(`/fields/${field.id}`); // Navigate to FieldDetail view
-};
+  const handleClick = () => {
+    navigate(`/fields/${field.id}`); // Navigate to the FieldDetail view
+  };
+
+  // A simple utility function to check if the boundary data exists and is valid
+  const hasValidBoundary = (boundary) => {
+    try {
+      const boundaryData = JSON.parse(boundary);
+      return boundaryData && boundaryData.type === "Feature" && boundaryData.geometry.type === "Polygon";
+    } catch (error) {
+      console.error("Error parsing boundary data:", error);
+      return false;
+    }
+  };
+
   return (
     <div className="field-card" onClick={handleClick}>
-    <div className = "field-title">
-    <h3> {field.name}</h3>
-    <h2>{field.acres} ac</h2>
-    </div>
-    <div className="field-info">
-      <p>
-        <EnvironmentOutlined /> {field.address}
-      </p>
-      <p>
-        <AreaChartOutlined /> Acres: {field.acres}
-      </p>
-      <p>
-        <FileTextOutlined /> Soil Type: {field.soilType}
-      </p>
-      {field.notes && (
+      <div className="field-title">
+        <h3>{field.name}</h3>
+        <h2>{field.acres} ac</h2>
+      </div>
+      <div className="field-info">
         <p>
-          <FileTextOutlined /> Notes: {field.notes}
+          <EnvironmentOutlined /> {field.address}
         </p>
-      )}
-      {field.boundary && (
         <p>
-          <FileTextOutlined /> Boundary: {field.boundary}
+          <AreaChartOutlined /> Acres: {field.acres}
         </p>
-      )}
-   </div>
+        <p>
+          <FileTextOutlined /> Soil Type: {field.soilType}
+        </p>
+        {field.notes && (
+          <p>
+            <FileTextOutlined /> Notes: {field.notes}
+          </p>
+        )}
+        {field.boundary && hasValidBoundary(field.boundary) && (
+          <p>
+            <EnvironmentOutlined /> Field Boundary Available
+          </p>
+        )}
+      </div>
     </div>
   );
 };

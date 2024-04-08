@@ -1,56 +1,66 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { db } from "./firebase-config";
-import { doc, getDoc } from "firebase/firestore";
-import { Tabs, Button } from "antd";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Tabs, Button, Form, Input, InputNumber } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Header from "./Header";
 import CropView from "./CropView";
 import InspectionsView from "./InspectionsView";
+import MapFieldComponent from "./MapFieldComponent"; // Assume this component is ready for use
 import "./FieldDetail.css";
 
 const { TabPane } = Tabs;
+const { TextArea } = Input;
 
 const FieldDetail = () => {
   const navigate = useNavigate();
-  const { farmId, fieldId } = useParams(); // Ensure farmId is also retrieved from useParams
-  const [fieldDetails, setFieldDetails] = useState({ name: "Loading..." }); // Initialized with a loading state
+  const { farmId, fieldId } = useParams();
+  const [fieldDetails, setFieldDetails] = useState({ name: "Loading..." });
+  const [form] = Form.useForm();
 
   useEffect(() => {
     const fetchFieldDetails = async () => {
-      console.log(`Fetching details for farmId: ${farmId}, fieldId: ${fieldId}`);
-      if (!farmId || !fieldId) {
-        console.log("farmId or fieldId is missing.");
-        return;
-      }
+      if (!farmId || !fieldId) return;
       const fieldRef = doc(db, "farms", farmId, "fields", fieldId);
       try {
         const docSnap = await getDoc(fieldRef);
         if (docSnap.exists()) {
-          console.log("Document data:", docSnap.data());
           setFieldDetails(docSnap.data());
+          form.setFieldsValue(docSnap.data()); // Set form fields
         } else {
-          console.log("No such field!");
-          setFieldDetails({ name: "Field not found" }); // Provide feedback when field is not found
+          setFieldDetails({ name: "Field not found" });
         }
       } catch (error) {
         console.error("Error fetching field details:", error);
-        setFieldDetails({ name: "Error fetching details" }); // Provide feedback on error
+        setFieldDetails({ name: "Error fetching details" });
       }
     };
-  
+
     fetchFieldDetails();
   }, [farmId, fieldId]);
-  
+
+  const handleFormSubmit = async (values) => {
+    const fieldRef = doc(db, "farms", farmId, "fields", fieldId);
+    try {
+      await updateDoc(fieldRef, values);
+      alert("Field details updated!");
+    } catch (error) {
+      console.error("Error updating field details:", error);
+    }
+  };
+
+  // Assume handleBoundaryChange is implemented to update boundary data
+  const handleBoundaryChange = async (newBoundary) => {
+    const fieldRef = doc(db, "farms", farmId, "fields", fieldId);
+    await updateDoc(fieldRef, { boundary: newBoundary });
+  };
 
   return (
     <div>
       <Header />
-      <div className="fields-header">
-        <ArrowLeftOutlined
-          onClick={() => navigate(-1)}
-          style={{ marginRight: 16, cursor: "pointer" }}
-        />
+      <div className="field-detail-header">
+        <ArrowLeftOutlined onClick={() => navigate(-1)} style={{ marginRight: 16, cursor: "pointer" }} />
         <span style={{ flex: 1 }}>
           <h2>{fieldDetails.name}</h2>
         </span>
@@ -62,8 +72,22 @@ const FieldDetail = () => {
         <TabPane tab="Inspections" key="2">
           <InspectionsView fieldId={fieldId} />
         </TabPane>
-        <TabPane tab="Programmes" key="3">
-          {/* Placeholder for Programmes content */}
+        <TabPane tab="Field Info" key="4">
+          <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
+            <Form.Item name="name" label="Field Name" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="acres" label="Acres">
+              <InputNumber />
+            </Form.Item>
+            <Form.Item name="notes" label="Notes">
+              <TextArea rows={4} />
+            </Form.Item>
+            <Button type="primary" htmlType="submit">
+              Save Field Info
+            </Button>
+          </Form>
+          <MapFieldComponent onBoundaryChange={handleBoundaryChange} initialBoundary={fieldDetails.boundary} />
         </TabPane>
       </Tabs>
     </div>
