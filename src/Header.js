@@ -76,15 +76,7 @@ const Header = () => {
                     <input type="text" placeholder="Search fields..." />
                 </div>
                 <div className="user-actions">
-                <Dropdown overlay={notificationMenu} trigger={['click']}>
-                        <FaTasks className="icon-action notification-bell" />
-                    </Dropdown>
-                <Dropdown overlay={notificationMenu} trigger={['click']}>
-                        <FiMap className="icon-action notification-bell" />
-                    </Dropdown>
-                    <Dropdown overlay={notificationMenu} trigger={['click']}>
-                    <FaRegCalendarAlt className="icon-action notification-bell" />
-                    </Dropdown>
+               
                     <Dropdown overlay={notificationMenu} trigger={['click']}>
                         <FaRegBell className="icon-action notification-bell" />
                     </Dropdown>

@@ -15,6 +15,7 @@ import FieldDetail from './FieldDetail';
 import TeamSlideOut from './TeamSlideOut';
 import { Provider } from 'react-redux'; // Import from react-redux
 import { store } from './store'; // Ensure the store path is correct
+import FarmInfoView from "./FarmInfoView";
 
 // Function Component for Home (Placeholder)
 import styled from 'styled-components';
@@ -84,6 +85,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/farms/:farmId/fields" element={<FieldsView />} />
               <Route path="/fields/:fieldId" element={<FieldDetail />} />
+              <Route path="/farm-info/:farmId" element={<FarmInfoView />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

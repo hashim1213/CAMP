@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Form,
   Input,
@@ -22,25 +22,30 @@ import {
 } from "firebase/firestore"; // Ensure serverTimestamp is imported
 import "./FieldDetail.css";
 
-const { Option } = Select; // Correctly define Option
+const { Option } = Select;
 
 const InspectionsView = () => {
-  // Your component's state and functions...
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [inspections, setInspections] = useState([]);
+  const [showWeedPressure, setShowWeedPressure] = useState(false);
+  const [showPestPressure, setShowPestPressure] = useState(false);
   const { fieldId } = useParams();
 
   const onUploadChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    form.resetFields();
+    setShowWeedPressure(false);
+    setShowPestPressure(false);
   };
 
   const fetchInspections = async () => {
@@ -51,30 +56,23 @@ const InspectionsView = () => {
       return {
         id: doc.id,
         ...data,
-        date: data.date?.toDate().toISOString().substring(0, 10), // Existing date field
-        createdAt: data.createdAt?.toDate().toISOString().substring(0, 10), // Handle createdAt similarly
+        date: data.date?.toDate().toISOString().substring(0, 10),
+        createdAt: data.createdAt?.toDate().toISOString().substring(0, 10),
       };
     });
-
     setInspections(fetchedInspections);
   };
 
   useEffect(() => {
     fetchInspections();
-  }, [fieldId]); // Re-fetch inspections if fieldId changes
+  }, [fieldId]);
 
   const onFinish = async (values) => {
     console.log("Form values:", values);
-
-    // Exclude fields that shouldn't be directly saved to Firestore
     const { upload, ...dataToSave } = values;
-
-    // Format values as needed and add a server timestamp
     const formattedValues = {
       ...dataToSave,
-
       createdAt: serverTimestamp(),
-
       location: values.location || "Not specified",
     };
 
@@ -86,12 +84,7 @@ const InspectionsView = () => {
         "inspections"
       );
       await addDoc(inspectionsCollectionRef, formattedValues);
-
-      // Update UI and state
-      setInspections((prevInspections) => [
-        ...prevInspections,
-        { ...formattedValues, id: Date.now().toString() },
-      ]); // Using Date.now() as a placeholder for the unique ID
+      fetchInspections();
       setIsModalVisible(false);
       form.resetFields();
       message.success("Inspection details added successfully!");
@@ -101,7 +94,6 @@ const InspectionsView = () => {
     }
   };
 
-  // Capture the current geolocation
   const captureLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -120,6 +112,11 @@ const InspectionsView = () => {
     }
   };
 
+  const handleObservationTypeChange = (value) => {
+    setShowWeedPressure(value.includes("weeds"));
+    setShowPestPressure(value.includes("pests"));
+  };
+
   return (
     <>
       <div className="add-crop-container">
@@ -132,7 +129,6 @@ const InspectionsView = () => {
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
-        onOk={form.submit}
       >
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item
@@ -149,6 +145,56 @@ const InspectionsView = () => {
               <Option value="harvest">Harvest</Option>
             </Select>
           </Form.Item>
+
+          <Form.Item
+            name="observationType"
+            label="Observation Type"
+            rules={[
+              { required: true, message: "Please select the observation type!" },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Select observation types"
+              onChange={handleObservationTypeChange}
+            >
+              <Option value="weeds">Weeds</Option>
+              <Option value="pests">Pests</Option>
+              <Option value="disease">Disease</Option>
+            </Select>
+          </Form.Item>
+
+          {showWeedPressure && (
+            <Form.Item
+              name="weedPressure"
+              label="Weed Pressure"
+              rules={[
+                { required: true, message: "Please select weed pressure!" },
+              ]}
+            >
+              <Select placeholder="Select weed pressure">
+                <Option value="low">Low</Option>
+                <Option value="medium">Medium</Option>
+                <Option value="high">High</Option>
+              </Select>
+            </Form.Item>
+          )}
+
+          {showPestPressure && (
+            <Form.Item
+              name="pestPressure"
+              label="Pest Pressure"
+              rules={[
+                { required: true, message: "Please select pest pressure!" },
+              ]}
+            >
+              <Select placeholder="Select pest pressure">
+                <Option value="low">Low</Option>
+                <Option value="medium">Medium</Option>
+                <Option value="high">High</Option>
+              </Select>
+            </Form.Item>
+          )}
 
           <Form.Item name="notes" label="Observation Notes">
             <Input.TextArea rows={4} />
@@ -189,17 +235,18 @@ const InspectionsView = () => {
           </Form.Item>
         </Form>
       </Modal>
-      {inspections.map((inspection, index) => (
+      {inspections.map((inspection) => (
         <Card
-          key={index}
+          key={inspection.id}
           title={`Inspection on ${inspection.plantStage}`}
           style={{ marginTop: 16 }}
         >
+          <p>Observation Type: {inspection.observationType?.join(", ")}</p>
+          {inspection.weedPressure && <p>Weed Pressure: {inspection.weedPressure}</p>}
+          {inspection.pestPressure && <p>Pest Pressure: {inspection.pestPressure}</p>}
           <p>Notes: {inspection.notes}</p>
-          <p>Date: {inspection.createdAt}</p>{" "}
-          {/* Convert Firestore Timestamp to readable date string */}
+          <p>Date: {inspection.createdAt}</p>
           <p>Location: {inspection.location}</p>
-          {/* Display uploaded pictures if necessary */}
         </Card>
       ))}
     </>

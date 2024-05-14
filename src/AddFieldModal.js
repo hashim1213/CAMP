@@ -28,6 +28,7 @@ const AddFieldModal = ({ isVisible, onSubmit, onCancel }) => {
   // Function to handle boundary data submission from the map
   const handleMapSubmit = (boundary) => {
     setBoundaryData(boundary); // Update the boundary data state
+    form.setFieldsValue({ boundary: JSON.stringify(boundary) }); // Update the form field with boundary data
     setIsMapVisible(false); // Hide the map modal after saving boundary
   };
 
@@ -59,7 +60,6 @@ const AddFieldModal = ({ isVisible, onSubmit, onCancel }) => {
         >
           <InputNumber min={1} style={{ width: "100%" }} />
         </Form.Item>
-        {/* Soil Type */}
         <Form.Item
           name="soilType"
           label="Soil Type"
@@ -81,7 +81,7 @@ const AddFieldModal = ({ isVisible, onSubmit, onCancel }) => {
           <Button onClick={() => setIsMapVisible(true)}>Open Map to Define Boundary</Button>
         </Form.Item>
         <Form.Item name="boundary" label="Field Boundary">
-          <Input placeholder="Boundary data will be filled after using the map." disabled />
+          <Input placeholder="Boundary data will be filled after using the map." disabled value={boundaryData ? JSON.stringify(boundaryData) : ''} />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">Submit</Button>

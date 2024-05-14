@@ -135,4 +135,13 @@
     align-items: center;
     gap: 10px; /* Adjust the gap between items as needed */
   }
+  .field-detail-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
   
+  .field-detail-header h2 {
+    margin:0;
+    
+  }

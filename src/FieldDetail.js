@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { db } from "./firebase-config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Tabs, Button, Form, Input, InputNumber } from "antd";
+import { Tabs, Button, Form, Input, InputNumber, message } from "antd"; // Add message to imports
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Header from "./Header";
 import CropView from "./CropView";
@@ -16,7 +16,7 @@ const { TextArea } = Input;
 const FieldDetail = () => {
   const navigate = useNavigate();
   const { farmId, fieldId } = useParams();
-  const [fieldDetails, setFieldDetails] = useState({ name: "Loading..." });
+  const [fieldDetails, setFieldDetails] = useState({});
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -26,8 +26,9 @@ const FieldDetail = () => {
       try {
         const docSnap = await getDoc(fieldRef);
         if (docSnap.exists()) {
-          setFieldDetails(docSnap.data());
-          form.setFieldsValue(docSnap.data()); // Set form fields
+          const data = docSnap.data();
+          setFieldDetails(data);
+          form.setFieldsValue(data); // Set form fields
         } else {
           setFieldDetails({ name: "Field not found" });
         }
@@ -38,22 +39,31 @@ const FieldDetail = () => {
     };
 
     fetchFieldDetails();
-  }, [farmId, fieldId]);
+  }, [farmId, fieldId, form]);
 
   const handleFormSubmit = async (values) => {
     const fieldRef = doc(db, "farms", farmId, "fields", fieldId);
     try {
       await updateDoc(fieldRef, values);
-      alert("Field details updated!");
+      message.success("Field details updated!");
     } catch (error) {
       console.error("Error updating field details:", error);
+      message.error("Failed to update field details.");
     }
   };
 
-  // Assume handleBoundaryChange is implemented to update boundary data
   const handleBoundaryChange = async (newBoundary) => {
     const fieldRef = doc(db, "farms", farmId, "fields", fieldId);
-    await updateDoc(fieldRef, { boundary: newBoundary });
+    try {
+      await updateDoc(fieldRef, { boundary: newBoundary });
+      setFieldDetails((prevDetails) => ({
+        ...prevDetails,
+        boundary: newBoundary,
+      }));
+    } catch (error) {
+      console.error("Error updating boundary:", error);
+      message.error("Failed to update boundary.");
+    }
   };
 
   return (

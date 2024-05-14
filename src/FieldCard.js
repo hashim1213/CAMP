@@ -3,6 +3,7 @@ import { Card } from 'antd';
 import { EnvironmentOutlined, FileTextOutlined, AreaChartOutlined } from '@ant-design/icons';
 import './FieldCard.css'; // Ensure your CSS for styling is correctly set up
 import { useNavigate } from 'react-router-dom';
+import BoundaryThumbnail from './BoundaryThumbnail'; // Import the new BoundaryThumbnail component
 
 const FieldCard = ({ field }) => {
   const navigate = useNavigate();
@@ -44,9 +45,10 @@ const FieldCard = ({ field }) => {
           </p>
         )}
         {field.boundary && hasValidBoundary(field.boundary) && (
-          <p>
-            <EnvironmentOutlined /> Field Boundary Available
-          </p>
+          <div>
+            <EnvironmentOutlined /> Field Boundary:
+            <BoundaryThumbnail boundary={field.boundary} /> {/* Render the boundary thumbnail */}
+          </div>
         )}
       </div>
     </div>
